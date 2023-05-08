@@ -1,55 +1,58 @@
-// Set the time limit for the quiz (in seconds)
-const timeLimit = 60;
+const questions = [
+	{
+		question: "What is the capital of France?",
+		options: ["Paris", "London", "Madrid", "Rome"],
+		answer: 0
+	},
+	{
+		question: "What is the largest planet in our solar system?",
+		options: ["Jupiter", "Saturn", "Mars", "Venus"],
+		answer: 0
+	},
+	{
+		question: "What is the smallest country in the world?",
+		options: ["Monaco", "Vatican City", "San Marino", "Liechtenstein"],
+		answer: 1
+	},
+	{
+		question: "What is the tallest mountain in the world?",
+		options: ["K2", "Makalu", "Everest", "Lhotse"],
+		answer: 2
+	},
+	{
+		question: "What is the chemical symbol for gold?",
+		options: ["Au", "Ag", "Cu", "Fe"],
+		answer: 0
+	}
+];
 
-// Define an array to store the correct answers
-const correctAnswers = ['a', 'c', 'b'];
+const container = document.querySelector(".container");
+const startBtn = document.getElementById("start-btn");
+const questionContainer = document.getElementById("question-container");
+const questionEl = document.getElementById("question");
+const optionsEl = document.getElementById("options");
+const timerEl = document.getElementById("timer");
 
-// Define an array to store the user's answers
-let userAnswers = [];
+let currentQuestion = 0;
+let score = 0;
+let timeLeft = 60;
+let timer;
 
-// Define a variable to store the remaining time
-let remainingTime = timeLimit;
-
-// Define a variable to store the timer interval
-let timerInterval;
-
-// Display the remaining time in the timer div
-function displayTimer() {
-    const timerDiv = document.getElementById('timer');
-    timerDiv.innerHTML = `Time Remaining: ${remainingTime}`;
+function startQuiz() {
+	startBtn.classList.add("hide");
+	questionContainer.classList.remove("hide");
+	timer = setInterval(updateTimer, 1000);
+	showQuestion();
 }
 
-// Start the timer
-function startTimer() {
-    displayTimer();
-    timerInterval = setInterval(() => {
-        remainingTime--;
-        if (remainingTime <= 0) {
-            clearInterval(timerInterval);
-            checkAnswers();
-        } else {
-            displayTimer();
-        }
-    }, 1000);
+function showQuestion() {
+	resetOptions();
+	const question = questions[currentQuestion];
+	questionEl.innerText = question.question;
+	for (let i = 0; i < question.options.length; i++) {
+		optionsEl.children[i].innerText = question.options[i];
+	}
 }
 
-// Check the user's answers
-function checkAnswers() {
-    clearInterval(timerInterval);
-    const form = document.getElementById('quiz-form');
-    const inputs = form.getElementsByTagName('input');
-    for (let i = 0; i < inputs.length; i++) {
-        if (inputs[i].checked) {
-            userAnswers[i] = inputs[i].value;
-        }
-    }
-    let numCorrect = 0;
-    let numIncorrect = 0;
-    for (let i = 0; i < correctAnswers.length; i++) {
-        if (userAnswers[i] === correctAnswers[i]) {
-            numCorrect++;
-        } else {
-            numIncorrect++;
-            remainingTime -= 10;
-        }
-    }
+function selectAnswer(index) {
+	const question = questions[currentQuestion];
