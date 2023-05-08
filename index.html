@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Browser Quiz</title>
+</head>
+<body>
+	<h1>Browser Quiz</h1>
+	<p>Answer the following questions:</p>
+	<form id="quiz-form">
+		<p><strong>Question 1:</strong> What is the capital of France?</p>
+		<input type="radio" name="q1" value="a"> a) Paris<br>
+		<input type="radio" name="q1" value="b"> b) Berlin<br>
+		<input type="radio" name="q1" value="c"> c) Rome<br>
+
+		<p><strong>Question 2:</strong> What is the largest planet in our solar system?</p>
+		<input type="radio" name="q2" value="a"> a) Venus<br>
+		<input type="radio" name="q2" value="b"> b) Mars<br>
+		<input type="radio" name="q2" value="c"> c) Jupiter<br>
+
+		<p><strong>Question 3:</strong> Who is the current president of the United States?</p>
+		<input type="radio" name="q3" value="a"> a) Barack Obama<br>
+		<input type="radio" name="q3" value="b"> b) Joe Biden<br>
+		<input type="radio" name="q3" value="c"> c) Donald Trump<br>
+
+		<input type="button" value="Submit" onclick="checkAnswers()">
+	</form>
+
+	<div id="timer" style="position: absolute; top: 0; right: 0;"></div>
+
+	<script src="quiz.js"></script>
+</body>
+</html>
