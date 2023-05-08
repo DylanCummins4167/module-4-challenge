@@ -1,0 +1,30 @@
+.container {
+	max-width: 800px;
+	margin: auto;
+	padding: 20px;
+	text-align: center;
+}
+
+.hide {
+	display: none;
+}
+
+.btn-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-gap: 10px;
+	margin: 20px 0;
+}
+
+.btn {
+	padding: 10px;
+	font-size: 1.2em;
+	background-color: #eee;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.btn:hover {
+	background-color: #ddd;
+}
