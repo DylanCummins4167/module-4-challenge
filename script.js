@@ -1,58 +1,81 @@
+// Define quiz questions and answers
 const questions = [
 	{
 		question: "What is the capital of France?",
-		options: ["Paris", "London", "Madrid", "Rome"],
-		answer: 0
+		choices: ["Paris", "Berlin", "London", "Madrid"],
+		answer: "Paris"
+	},
+	{
+		question: "What is the tallest mammal?",
+		choices: ["Elephant", "Giraffe", "Horse", "Rhino"],
+		answer: "Giraffe"
 	},
 	{
 		question: "What is the largest planet in our solar system?",
-		options: ["Jupiter", "Saturn", "Mars", "Venus"],
-		answer: 0
+		choices: ["Mars", "Jupiter", "Earth", "Saturn"],
+		answer: "Jupiter"
 	},
 	{
 		question: "What is the smallest country in the world?",
-		options: ["Monaco", "Vatican City", "San Marino", "Liechtenstein"],
-		answer: 1
-	},
-	{
-		question: "What is the tallest mountain in the world?",
-		options: ["K2", "Makalu", "Everest", "Lhotse"],
-		answer: 2
-	},
-	{
-		question: "What is the chemical symbol for gold?",
-		options: ["Au", "Ag", "Cu", "Fe"],
-		answer: 0
+		choices: ["China", "USA", "Vatican City", "Australia"],
+		answer: "Vatican City"
 	}
 ];
 
-const container = document.querySelector(".container");
-const startBtn = document.getElementById("start-btn");
-const questionContainer = document.getElementById("question-container");
+// Get HTML elements
+const startBtn = document.getElementById("startBtn");
+const quiz = document.getElementById("quiz");
 const questionEl = document.getElementById("question");
-const optionsEl = document.getElementById("options");
+const choicesEl = document.getElementById("choices");
+const resultEl = document.getElementById("result");
 const timerEl = document.getElementById("timer");
 
 let currentQuestion = 0;
-let score = 0;
-let timeLeft = 60;
-let timer;
+let time = 60;
+
+// Start quiz when start button is clicked
+startBtn.addEventListener("click", startQuiz);
 
 function startQuiz() {
-	startBtn.classList.add("hide");
-	questionContainer.classList.remove("hide");
-	timer = setInterval(updateTimer, 1000);
+	// Hide start button and show quiz
+	startBtn.style.display = "none";
+	quiz.style.display = "block";
+
+	// Start timer
+	let countdown = setInterval(function() {
+		time--;
+		timerEl.innerHTML = time;
+
+		if (time <= 0) {
+			clearInterval(countdown);
+			endQuiz();
+		}
+	}, 1000);
+
+	// Show first question
 	showQuestion();
 }
 
 function showQuestion() {
-	resetOptions();
-	const question = questions[currentQuestion];
-	questionEl.innerText = question.question;
-	for (let i = 0; i < question.options.length; i++) {
-		optionsEl.children[i].innerText = question.options[i];
-	}
-}
+	// Get current question
+	let q = questions[currentQuestion];
 
-function selectAnswer(index) {
-	const question = questions[currentQuestion];
+	// Update question and choices
+	questionEl.innerHTML = q.question;
+	choicesEl.innerHTML = "";
+
+	for (let i = 0; i < q.choices.length; i++) {
+		let choice = q.choices[i];
+		let btn = document.createElement("button");
+		btn.innerHTML = choice;
+		btn.addEventListener("click", function() {
+			if (choice === q.answer) {
+				currentQuestion++;
+				if (currentQuestion >= questions.length) {
+					endQuiz();
+				} else {
+					showQuestion();
+				}
+			} else {
+				time -= 10;
+				if (time < 0)
