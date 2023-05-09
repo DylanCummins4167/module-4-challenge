@@ -38,24 +38,47 @@ let time = 60;
 let timerInterval;
 
 function startQuiz() {
-	startBtn.style.display = "none";
-	timerInterval = setInterval(updateTimer, 1000);
-	updateQuestion();
+    startBtn.style.display = "none";
+    timerInterval = setInterval(updateTimer, 1000);
+    updateQuestion();
 }
 
+startBtn.addEventListener("click", startQuiz);
+
 function updateTimer() {
-	time--;
-	timer.textContent = time;
-	if (time === 0) {
-		endQuiz("Time is Up");
-	}
+    time--;
+    timer.textContent = time;
+    if (time === 0) {
+        endQuiz("Time is Up");
+    }
 }
 
 function updateQuestion() {
-	questionDiv.textContent = questions[currentQuestion].question;
-	optionsDiv.innerHTML = "";
-	questions[currentQuestion].options.forEach(option => {
-		const optionDiv = document.createElement("div");
-		optionDiv.classList.add("option");
-		optionDiv.textContent = option;
-		optionDiv.addEventListener("click", () =>
+    questionDiv.textContent = questions[currentQuestion].question;
+    optionsDiv.innerHTML = "";
+    questions[currentQuestion].options.forEach(option => {
+        const optionDiv = document.createElement("div");
+        optionDiv.classList.add("option");
+        optionDiv.textContent = option;
+        optionDiv.addEventListener("click", () => {
+            if (option === questions[currentQuestion].answer) {
+                score++;
+                currentQuestion++;
+                if (currentQuestion === questions.length) {
+                    endQuiz("Thank You for Your Submission");
+                } else {
+                    updateQuestion();
+                }
+            } else {
+                time -= 10;
+            }
+        });
+        optionsDiv.appendChild(optionDiv);
+    });
+}
+
+function endQuiz(message) {
+    clearInterval(timerInterval);
+    questionDiv.textContent = message;
+    optionsDiv.innerHTML = `<p>Your score is ${score} out of ${questions.length}</p><button onclick="location.reload()">Restart</button>`;
+}
