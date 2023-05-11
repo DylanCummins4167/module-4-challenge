@@ -31,6 +31,8 @@ const timer = document.querySelector("#timer");
 const startBtn = document.querySelector("#start");
 const questionDiv = document.querySelector("#question");
 const optionsDiv = document.querySelector("#options");
+const scoreForm = document.querySelector("#score-form");
+const initialsInput = document.querySelector("#initials");
 
 let currentQuestion = 0;
 let score = 0;
@@ -65,7 +67,7 @@ function updateQuestion() {
                 score++;
                 currentQuestion++;
                 if (currentQuestion === questions.length) {
-                    endQuiz("Thank You for Your Submission");
+                    endQuiz();
                 } else {
                     updateQuestion();
                 }
@@ -77,8 +79,22 @@ function updateQuestion() {
     });
 }
 
-function endQuiz(message) {
+function endQuiz() {
     clearInterval(timerInterval);
-    questionDiv.textContent = message;
-    optionsDiv.innerHTML = `<p>Your score is ${score} out of ${questions.length}</p><button onclick="location.reload()">Restart</button>`;
+    questionDiv.textContent = "Thank You for Your Submission";
+    optionsDiv.innerHTML = `<p>Your score is ${score} out of ${questions.length}</p>
+                            <form id="score-form">
+                                <label for="initials">Enter Your Initials: </label>
+                                <input type="text" id="initials" name="initials">
+                                <button type="submit">Submit Score</button>
+                            </form>`;
+    scoreForm.addEventListener("submit", submitScore);
+}
+
+function submitScore(event) {
+    event.preventDefault();
+    const initials = initialsInput.value;
+    const scoreData = { initials, score };
+    console.log(scoreData);
+    // TODO: Send score data to server or store locally
 }
